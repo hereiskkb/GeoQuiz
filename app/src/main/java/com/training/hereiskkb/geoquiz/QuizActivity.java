@@ -1,41 +1,61 @@
 package com.training.hereiskkb.geoquiz;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
 
     private Button mTrueButton;
-    private Button mFalseButton;
-    private Button mNextButton;
-    private TextView mQuestionTextView;
+    private Button mFalsButton;
+    private ImageButton mNextButton;
+    private ImageButton mPrevButton;
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_australia, true),
-            new Question(R.string.question_india, true),
-            new Question(R.string.question_alps, false)
+            new Question(R.string.question_india, false),
+            new Question(R.string.question_andes, true)
     };
     private int mCurrentIndex = 0;
-
+    private TextView mQuestionTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        mQuestionTextView = (TextView) findViewById(R.id.question_text_view);
 
-        updateQuestionText();
-        mNextButton = (Button) findViewById(R.id.next_button);
-        mNextButton.setOnClickListener( new View.OnClickListener() {
+        mQuestionTextView = (TextView) findViewById(R.id.quiz_questions);
+        updateQuestion();
+        mQuestionTextView.setOnClickListener( new View.OnClickListener() {
             @Override
-            public void onClick( View v ) {
+            public void onClick(View v) {
                 mCurrentIndex = ( mCurrentIndex + 1 ) % mQuestionBank.length;
-                updateQuestionText();
+                updateQuestion();
             }
         });
-
+        mNextButton = (ImageButton) findViewById(R.id.next_button);
+        mNextButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCurrentIndex = ( mCurrentIndex + 1 ) % mQuestionBank.length;
+                updateQuestion();
+            }
+        });
+        mPrevButton = (ImageButton) findViewById(R.id.previous_button);
+        mPrevButton.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if( mCurrentIndex == 0 ) {
+                    mCurrentIndex = mQuestionBank.length - 1 ;
+                }
+                else {
+                    mCurrentIndex = (mCurrentIndex - 1) % mQuestionBank.length;
+                }
+                updateQuestion();
+            }
+        });
         mTrueButton = (Button) findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,8 +63,8 @@ public class QuizActivity extends AppCompatActivity {
                 checkAnswer(true);
             }
         });
-        mFalseButton = (Button) findViewById(R.id.false_button);
-        mFalseButton.setOnClickListener( new View.OnClickListener() {
+        mFalsButton = (Button) findViewById(R.id.false_button);
+        mFalsButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkAnswer(false);
@@ -52,19 +72,20 @@ public class QuizActivity extends AppCompatActivity {
         });
     }
 
-    private void updateQuestionText() {
+
+    private void updateQuestion() {
         int question = mQuestionBank[mCurrentIndex].getTextResId();
         mQuestionTextView.setText(question);
     }
 
-    private void checkAnswer(boolean answer) {
-        int messageResId = 0;
-        if( mQuestionBank[mCurrentIndex].isAnswerTrue() == answer ) {
-            messageResId = R.string.correct_toast;
+    private void checkAnswer( boolean ansValue ) {
+        int result = 0;
+        if( mQuestionBank[mCurrentIndex].isAnswerTrue() == ansValue ) {
+            result = R.string.correct_toast;
         }
         else {
-            messageResId = R.string.incorrect_toast;
+            result = R.string.incorrect_toast;
         }
-        Toast.makeText(QuizActivity.this, messageResId, Toast.LENGTH_SHORT ).show();
+        Toast.makeText(QuizActivity.this, result, Toast.LENGTH_SHORT).show();
     }
 }

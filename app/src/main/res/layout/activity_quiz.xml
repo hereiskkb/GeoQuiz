@@ -7,7 +7,7 @@
     android:orientation="vertical">
     
     <TextView
-        android:id="@+id/question_text_view"
+        android:id="@+id/quiz_questions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="24dp" />
@@ -31,11 +31,25 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/next_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
         android:layout_height="wrap_content"
-        android:text="@string/next_button"
-        android:drawableRight="@drawable/arrow_right"
-        android:drawablePadding="4dp" />
+        android:layout_width="wrap_content"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/previous_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_left"
+            android:contentDescription="Previous Button"/>
+
+        <ImageButton
+            android:id="@+id/next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_right"
+            android:contentDescription="Next Button" />
+
+    </LinearLayout>
+
 </LinearLayout>

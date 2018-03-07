@@ -1,14 +1,14 @@
 package com.training.hereiskkb.geoquiz;
 
 /**
- * Created by hereiskkb on 4/3/18.
+ * Created by hereiskkb on 3/3/18.
  */
 
 public class Question {
     private int mTextResId;
     private boolean mAnswerTrue;
 
-    public Question(int textResId, boolean answerTrue) {
+    public Question( int textResId, boolean answerTrue ){
         mTextResId = textResId;
         mAnswerTrue = answerTrue;
     }
@@ -19,10 +19,6 @@ public class Question {
 
     public void setTextResId(int textResId) {
         mTextResId = textResId;
-    }
-
-    public boolean isAnswerTrue() {
-        return mAnswerTrue;
     }
 
     public void setAnswerTrue(boolean answerTrue) {
