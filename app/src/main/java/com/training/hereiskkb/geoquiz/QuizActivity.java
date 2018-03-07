@@ -10,7 +10,7 @@ import android.widget.Toast;
 public class QuizActivity extends AppCompatActivity {
 
     private Button mTrueButton;
-    private Button mFalsButton;
+    private Button mFalseButton;
     private Button mNextButton;
     private TextView mQuestionTextView;
     private Question[] mQuestionBank = new Question[] {
@@ -43,8 +43,8 @@ public class QuizActivity extends AppCompatActivity {
                 checkAnswer(true);
             }
         });
-        mFalsButton = (Button) findViewById(R.id.false_button);
-        mFalsButton.setOnClickListener( new View.OnClickListener() {
+        mFalseButton = (Button) findViewById(R.id.false_button);
+        mFalseButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkAnswer(false);
