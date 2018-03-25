@@ -17,6 +17,7 @@ public class QuizActivity extends AppCompatActivity {
     private static final String BUTTON_STATE = "state";
     private static final int REQUEST_CODE_CHEAT = 0;
     private static final String CHEAT_STATUS = "cheat status";
+    private static final String END_OF_QUESTIONS = "end of questions";
 
     private boolean mState = true;
     private Button mTrueButton;
@@ -24,6 +25,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button mNextButton;
     private Button mCheatButton;
     private boolean mIsCheater;
+    private boolean mEnd = false;
 
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_australia, true),
@@ -41,6 +43,7 @@ public class QuizActivity extends AppCompatActivity {
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
             mState = savedInstanceState.getBoolean(BUTTON_STATE, true);
             mIsCheater = savedInstanceState.getBoolean(CHEAT_STATUS, false);
+            mEnd = savedInstanceState.getBoolean(END_OF_QUESTIONS, false);
         }
 
         mCheatButton = findViewById(R.id.cheat_button);
@@ -53,29 +56,27 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
+        mQuestionTextView = findViewById(R.id.quiz_questions);
+        updateQuestion();
         mNextButton = findViewById(R.id.next_button);
+        if( mEnd ) {
+            mNextButton.setEnabled(false);
+        }
         mNextButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mState = true;
-                mCurrentIndex = ( mCurrentIndex + 1 ) % mQuestionBank.length;
                 mIsCheater = false;
+                mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
                 updateQuestion();
                 activateButtons(mState);
+                if(mCurrentIndex == 2) {
+                    mEnd = true;
+                    mNextButton.setEnabled(false);
+                }
             }
         });
-        mQuestionTextView = findViewById(R.id.quiz_questions);
-        updateQuestion();
 
-        mQuestionTextView.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mState = true;
-                mCurrentIndex = ( mCurrentIndex + 1 ) % mQuestionBank.length;
-                updateQuestion();
-                activateButtons(mState);
-            }
-        });
 
         mTrueButton = findViewById(R.id.true_button );
         mFalseButton = findViewById(R.id.false_button);
@@ -92,7 +93,6 @@ public class QuizActivity extends AppCompatActivity {
                 checkAnswer(false);
             }
         });
-
     }
 
     @Override
@@ -134,6 +134,7 @@ public class QuizActivity extends AppCompatActivity {
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
         savedInstanceState.putBoolean(BUTTON_STATE, mState);
         savedInstanceState.putBoolean(CHEAT_STATUS, mIsCheater);
+        savedInstanceState.putBoolean(END_OF_QUESTIONS, mEnd);
     }
 
     @Override
